@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:13.3
+    restart: on-failure
+    environment:
+      POSTGRES_DB: "api_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - ${POSTGRES_DB_HOST_PORT}:5432
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d api_db'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  redis:
+    image: "redis:alpine"
+    restart: on-failure
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ACCESS_KEY=minioaccess
+      - MINIO_SECRET_KEY=miniosecret
+    command: server /data --console-address ":9001"
+
+  api:
+    build: 
+      dockerfile: ad_platform/api.dockerfile
+    restart: on-failure
+    environment:
+      POSTGRES_DB_HOST: ${POSTGRES_DB_HOST_PORT}
+      MINIO_ACCESS_KEY: minioaccess
+      MINIO_SECRET_KEY: miniosecret
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+      - minio
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+       - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - api

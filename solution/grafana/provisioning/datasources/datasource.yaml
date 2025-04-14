@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+- name: Данные API
+  type: yesoreyeram-infinity-datasource
+  url: http://api:8080/graf_stats/
+  access: proxy
+  isDefault: true
+  uid: ced65bite8i68e

@@ -1,0 +1,70 @@
+test_name: "Кампании"
+
+stages:
+  - name: "Получить кампании рекламодателя []"
+    request:
+      url: "{BASE_URL}/advertisers/3fa85f64-5717-4562-b3fc-2c963f66afa6/campaigns"
+      method: GET
+    response:
+      status_code: 200
+
+  - name: "Загрузить кампании"
+    request:
+      url: "{BASE_URL}/advertisers/3fa85f64-5717-4562-b3fc-2c963f66afa6/campaigns"
+      method: POST
+      json:
+        impressions_limit: 0
+        clicks_limit: 0
+        cost_per_impression: 0
+        cost_per_click: 0
+        ad_title: string
+        ad_text: string
+        start_date: 0
+        end_date: 0
+        targeting:
+          gender: MALE
+          age_from: 0
+          age_to: 0
+          location: string
+
+    response:
+      status_code: 201
+      save:
+        json:
+          campaign_id: campaign_id
+
+  - name: "Получить кампанию (200)"
+    request:
+      url: "{BASE_URL}/advertisers/3fa85f64-5717-4562-b3fc-2c963f66afa6/campaigns/{campaign_id}"
+      method: GET
+    response:
+      status_code: 200
+
+  - name: "Получить кампанию (404)"
+    request:
+      url: "{BASE_URL}/advertisers/3fa85f64-5717-4562-b3fc-2c963f66afa6/campaigns/kaka"
+      method: GET
+    response:
+      status_code: 404
+
+  - name: "Загрузить кампанию (плохой зарос)"
+    request:
+      url: "{BASE_URL}/advertisers/3fa85f64-5717-4562-b3fc-2c963f66afa6/campaigns"
+      method: POST
+      json:
+        impressions_limit: 0
+        clicks_limit: 0
+        cost_per_impression: 0
+        cost_per_click: 0
+        ad_title: string
+        ad_text: string
+        start_date: 0
+        end_date: 0
+        targeting:
+          gender: ЛФЛФ
+          age_from: 0
+          age_to: 0
+          location: string
+
+    response:
+      status_code: 400

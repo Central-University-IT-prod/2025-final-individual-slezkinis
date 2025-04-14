@@ -1,0 +1,12 @@
+Django==5.1.6
+djangorestframework==3.15.2
+psycopg2-binary
+django_redis==5.2.0
+pyTelegramBotAPI==4.10.0
+Pillow
+boto3
+django-storages
+django_minio_backend
+pytest-django
+tavern==2.11.0
+gigachat

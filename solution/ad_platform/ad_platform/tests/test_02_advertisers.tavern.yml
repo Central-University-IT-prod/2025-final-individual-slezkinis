@@ -1,0 +1,28 @@
+test_name: "Рекламодатели"
+
+stages:
+  - name: "Загрузить рекламодателей"
+    request:
+      url: "{BASE_URL}/advertisers/bulk"
+      method: POST
+      json:
+        - 
+          advertiser_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          name: string
+
+    response:
+      status_code: 201
+
+  - name: "Получить рекламодателя (200)"
+    request:
+      url: "{BASE_URL}/advertisers/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      method: GET
+    response:
+      status_code: 200
+
+  - name: "Получить рекламодателя (404)"
+    request:
+      url: "{BASE_URL}/advertisers/kaka"
+      method: GET
+    response:
+      status_code: 404

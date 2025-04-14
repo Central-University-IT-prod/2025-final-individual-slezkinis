@@ -1,0 +1,31 @@
+test_name: "Клиенты"
+
+stages:
+  - name: "Загрузить клиентов"
+    request:
+      url: "{BASE_URL}/clients/bulk"
+      method: POST
+      json:
+        - 
+          client_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          login: string
+          age: 0
+          location: string
+          gender: MALE
+
+    response:
+      status_code: 201
+
+  - name: "Получить клиента (200)"
+    request:
+      url: "{BASE_URL}/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      method: GET
+    response:
+      status_code: 200
+  
+  - name: "Получить клиента (404)"
+    request:
+      url: "{BASE_URL}/clients/kaka"
+      method: GET
+    response:
+      status_code: 404
